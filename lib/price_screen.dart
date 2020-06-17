@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'coin_data.dart';
 
 class PriceScreen extends StatefulWidget {
   @override
@@ -7,6 +8,22 @@ class PriceScreen extends StatefulWidget {
 
 class _PriceScreenState extends State<PriceScreen> {
   String selectedCurrency = 'USD';
+
+  List<DropdownMenuItem> getDropDownList() {
+    List<DropdownMenuItem<String>> dropdownItems = [];
+    //empty dropdown list
+    for (String currency in currenciesList) {
+      //for every currency in list
+      var newItem = DropdownMenuItem(
+        //create a new dropdown menu item
+        child: Text(currency),
+        value: currency,
+      );
+      dropdownItems.add(newItem);
+      //add the new menu item to the list of dropdown items
+    }
+    return dropdownItems;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,23 +63,12 @@ class _PriceScreenState extends State<PriceScreen> {
             color: Colors.lightBlue,
             child: DropdownButton<String>(
                 value: selectedCurrency,
-                items: [
-                  DropdownMenuItem(
-                    child: Text('USD'),
-                    value: 'USD',
-                  ),
-                  DropdownMenuItem(
-                    child: Text('GBP'),
-                    value: 'GBP',
-                  ),
-                  DropdownMenuItem(
-                    child: Text('EUR'),
-                    value: 'EUR',
-                  ),
-                ],
+                items: getDropDownList(),
                 onChanged: (value) {
+                  //when the selected value has changed
                   setState(() {
                     selectedCurrency = value;
+                    //set the state to the selected value
                   });
                 }),
           ),
@@ -71,3 +77,23 @@ class _PriceScreenState extends State<PriceScreen> {
     );
   }
 }
+
+/* C-style FOR LOOP
+
+   List<DropdownMenuItem> getDropDownList() {
+    List<DropdownMenuItem<String>> dropdownItems = [];
+    //empty dropdown list
+    for (int i = 0; i < currenciesList.length; i++) {
+      //loop through currencies list
+      String currency = currenciesList[i];
+      //for every currency in list
+      var newItem = DropdownMenuItem(
+        //create a new dropdown menu item
+        child: Text(currency),
+        value: currency,
+      );
+      dropdownItems.add(newItem);
+      //add the new menu item to the list of dropdown items
+    }
+    return dropdownItems;
+  }*/
