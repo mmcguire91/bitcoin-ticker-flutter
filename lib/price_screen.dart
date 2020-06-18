@@ -28,6 +28,7 @@ class _PriceScreenState extends State<PriceScreen> {
     return DropdownButton<String>(
       //return functionality of material design dropdown lst
       value: selectedCurrency,
+      items: dropdownItems,
       onChanged: (value) {
         //when the selected value has changed
         setState(() {
@@ -51,15 +52,6 @@ class _PriceScreenState extends State<PriceScreen> {
       //onSelectedIndex = onChanged, selectedIndex = value
       children: pickerItems,
     );
-  }
-
-  //determine whether to show iOS or Android UI components
-  Widget getPicker() {
-    if (Platform.isIOS) {
-      return iOSPicker();
-    } else if (Platform.isAndroid) {
-      return androidDropdown();
-    }
   }
 
   @override
@@ -98,30 +90,10 @@ class _PriceScreenState extends State<PriceScreen> {
             alignment: Alignment.center,
             padding: EdgeInsets.only(bottom: 30.0),
             color: Colors.lightBlue,
-            child: getPicker(),
+            child: Platform.isAndroid ? androidDropdown() : iOSPicker(),
           ),
         ],
       ),
     );
   }
 }
-
-/* C-style FOR LOOP
-
-   List<DropdownMenuItem> getDropDownList() {
-    List<DropdownMenuItem<String>> dropdownItems = [];
-    //empty dropdown list
-    for (int i = 0; i < currenciesList.length; i++) {
-      //loop through currencies list
-      String currency = currenciesList[i];
-      //for every currency in list
-      var newItem = DropdownMenuItem(
-        //create a new dropdown menu item
-        child: Text(currency),
-        value: currency,
-      );
-      dropdownItems.add(newItem);
-      //add the new menu item to the list of dropdown items
-    }
-    return dropdownItems;
-  }*/
