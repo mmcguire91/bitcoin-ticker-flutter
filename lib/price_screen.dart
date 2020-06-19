@@ -3,8 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'coin_data.dart';
 import 'dart:io' show Platform; //only incorporate Platform class
 
-//test
-
 class PriceScreen extends StatefulWidget {
   @override
   _PriceScreenState createState() => _PriceScreenState();
@@ -13,6 +11,7 @@ class PriceScreen extends StatefulWidget {
 class _PriceScreenState extends State<PriceScreen> {
   String selectedCurrency = currenciesList[0];
   //Update the default currency to first object in the List from coin_data, the first item in the currencyList.
+  String selectedCrypto = cryptoList[0];
 
   DropdownButton<String> androidDropdown() {
     //Material design Dropdown list for loop (Android UI component)
@@ -68,6 +67,9 @@ class _PriceScreenState extends State<PriceScreen> {
   String bitcoinValueInSelectedCurrency = '?';
   //Variable to hold the value and use in Text Widget.
 
+  //TODO 7: Figure out a way of displaying a '?' on screen while we're waiting for the price data to come back. Hint: You'll need a ternary operator.
+
+  //TODO 6: Update this method to receive a Map containing the crypto:price key value pairs. Then use that map to update the CryptoCards.
   void getData() async {
     //Async method here awaits the coin data from coin_data.dart
     try {
@@ -91,6 +93,8 @@ class _PriceScreenState extends State<PriceScreen> {
     //Call getData() when the screen loads
   }
 
+  //TODO: For bonus points, create a method that loops through the cryptoList and generates a CryptoCard for each.
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -103,6 +107,9 @@ class _PriceScreenState extends State<PriceScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
+          //TODO 1: Refactor this Padding Widget into a separate Stateless Widget called CryptoCard, so we can create 3 of them, one for each cryptocurrency.
+          //TODO 2: You'll need to able to pass the selectedCurrency, value and cryptoCurrency to the constructor of this CryptoCard Widget.
+          //TODO 3: You'll need to use a Column Widget to contain the three CryptoCards.
           Padding(
             padding: EdgeInsets.fromLTRB(18.0, 18.0, 18.0, 0),
             child: Card(
