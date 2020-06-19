@@ -9,10 +9,11 @@ class PriceScreen extends StatefulWidget {
 }
 
 class _PriceScreenState extends State<PriceScreen> {
-  String selectedCurrency = 'USD';
+  String selectedCurrency = currenciesList[0];
+  //Update the default currency to first object in the List from coin_data, the first item in the currencyList.
 
   DropdownButton<String> androidDropdown() {
-    //Material design Dropdown list for loop
+    //Material design Dropdown list for loop (Android UI component)
     List<DropdownMenuItem<String>> dropdownItems = [];
     //empty dropdown list
     for (String currency in currenciesList) {
@@ -34,36 +35,47 @@ class _PriceScreenState extends State<PriceScreen> {
         setState(() {
           selectedCurrency = value;
           //set the state to the selected value
+          getData();
+          //Retrieve the latest data when user selects a value
         });
       },
     );
   }
 
   CupertinoPicker iOSPicker() {
+    //Cupertino Picker For Loop (iOS UI Component)
     List<Text> pickerItems = [];
-    //Cupertino Picker For Loop
     for (String currency in currenciesList) {
       pickerItems.add(Text(currency));
     }
     return CupertinoPicker(
       backgroundColor: Colors.lightBlue,
       itemExtent: 32.0, //size of items
-      onSelectedItemChanged: (selectedIndex) {},
+      onSelectedItemChanged: (selectedIndex) {
+        selectedCurrency = currenciesList[selectedIndex];
+        //Save the user selected value of the picker to the property selectedCurrency
+
+        getData();
+        //Retrieve the latest data when user selects a value
+      },
       //onSelectedIndex = onChanged, selectedIndex = value
       children: pickerItems,
     );
   }
 
-  //Create a variable to hold the value and use in our Text Widget. Give the variable a starting value of '?' before the data comes back from the async methods.
-  String bitcoinValueInUSD = '?';
+  String bitcoinValueInSelectedCurrency = '?';
+  //Variable to hold the value and use in Text Widget.
 
-  //Create an async method here await the coin data from coin_data.dart
   void getData() async {
+    //Async method here awaits the coin data from coin_data.dart
     try {
-      double data = await CoinData().getCoinData();
-      //We can't await in a setState(). So you have to separate it out into two steps.
+      double data = await CoinData().getCoinData(
+          selectedCurrency); //Can't await in a setState() so have to separate it out into two steps.
+      //Call the class CoinData() and method getCoinData from coin_data and save that to the local variable data (data type = double)
+
       setState(() {
-        bitcoinValueInUSD = data.toStringAsFixed(0);
+        bitcoinValueInSelectedCurrency = data.toStringAsFixed(0);
+        //update the value of the displayed USD from the local variable "data" to reflect the data retrieved from the API call in class CoinData() and method getCoinData from coin_data
       });
     } catch (e) {
       print(e);
@@ -74,7 +86,7 @@ class _PriceScreenState extends State<PriceScreen> {
   void initState() {
     super.initState();
     getData();
-    //Call getData() when the screen loads up
+    //Call getData() when the screen loads
   }
 
   @override
@@ -100,8 +112,11 @@ class _PriceScreenState extends State<PriceScreen> {
               child: Padding(
                 padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 28.0),
                 child: Text(
-                  //Update the Text Widget with the live bitcoin data here.
-                  '1 BTC = $bitcoinValueInUSD USD',
+                  //Update the Text Widget with the live bitcoin data
+
+                  '1 BTC = $bitcoinValueInSelectedCurrency $selectedCurrency',
+                  //Update the currency name depending on the selectedCurrency, the user selected value.
+
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 20.0,

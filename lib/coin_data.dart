@@ -39,11 +39,14 @@ const apiKey = '6EF3769F-22FF-4F28-94F8-27E64A8ED337';
 class CoinData {
   //Create the Asynchronous method getCoinData() that returns a Future (the price data).
 
-  Future getCoinData() async {
+  Future getCoinData(String selectedCurrency) async {
+    //get the coin data based on the user selectedCurrency saved to the variable selectedCurrency
+
+    String url = '$coinApiUrl/BTC/$selectedCurrency?apikey=$apiKey';
     //Create a url combining the coinAPIURL with the currencies we're interested, BTC to USD
-    String url = '$coinApiUrl/BTC/USD?apikey=$apiKey';
-    //Make a GET request to the URL and wait for the response.
+
     http.Response response = await http.get(url);
+    //Make a GET request to the URL and wait for the response.
 
     //Check that the request was successful.
     if (response.statusCode == 200) {
