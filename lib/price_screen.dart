@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'coin_data.dart';
+import 'package:bitcoin_ticker/Components/CryptoCard.dart';
 import 'dart:io' show Platform; //only incorporate Platform class
 
 class PriceScreen extends StatefulWidget {
@@ -107,33 +108,27 @@ class _PriceScreenState extends State<PriceScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          //TODO 1: Refactor this Padding Widget into a separate Stateless Widget called CryptoCard, so we can create 3 of them, one for each cryptocurrency.
-          //TODO 2: You'll need to able to pass the selectedCurrency, value and cryptoCurrency to the constructor of this CryptoCard Widget.
-          //TODO 3: You'll need to use a Column Widget to contain the three CryptoCards.
-          Padding(
-            padding: EdgeInsets.fromLTRB(18.0, 18.0, 18.0, 0),
-            child: Card(
-              color: Colors.lightBlueAccent,
-              elevation: 5.0,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
+          // 1: Refactor this Padding Widget into a separate Stateless Widget called CryptoCard, so we can create 3 of them, one for each cryptocurrency.
+          // 2: You'll need to able to pass the selectedCurrency, value and cryptoCurrency to the constructor of this CryptoCard Widget.
+          // 3: You'll need to use a Column Widget to contain the three CryptoCards.
+          Column(
+            children: <Widget>[
+              //BITCOIN
+              CryptoCard(
+                cryptoCardText:
+                    '1 BTC = $bitcoinValueInSelectedCurrency $selectedCurrency',
               ),
-              child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 28.0),
-                child: Text(
-                  //Update the Text Widget with the live bitcoin data
-
-                  '1 BTC = $bitcoinValueInSelectedCurrency $selectedCurrency',
-                  //Update the currency name depending on the selectedCurrency, the user selected value.
-
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    color: Colors.white,
-                  ),
-                ),
+              //ETHEREUM
+              CryptoCard(
+                cryptoCardText:
+                    '1 ETH = $bitcoinValueInSelectedCurrency $selectedCurrency',
               ),
-            ),
+              //LITECOIN
+              CryptoCard(
+                cryptoCardText:
+                    '1 LTC = $bitcoinValueInSelectedCurrency $selectedCurrency',
+              ),
+            ],
           ),
           Container(
             height: 150.0,
