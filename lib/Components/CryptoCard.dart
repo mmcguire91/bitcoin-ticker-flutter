@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:bitcoin_ticker/price_screen.dart';
-import 'package:bitcoin_ticker/coin_data.dart';
 
 class CryptoCard extends StatelessWidget {
-  CryptoCard({this.cryptoCardText});
+// 1: Refactor this Padding Widget into a separate Stateless Widget called CryptoCard, so we can create 3 of them, one for each cryptocurrency.
+  const CryptoCard({
+    this.value,
+    this.selectedCurrency,
+    this.cryptoCurrency,
+  });
 
-  final String cryptoCardText;
+  final String value;
+  final String selectedCurrency;
+  final String cryptoCurrency;
+  // 2: You'll need to able to pass the selectedCurrency, value and cryptoCurrency to the constructor of this CryptoCard Widget.
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -19,10 +26,8 @@ class CryptoCard extends StatelessWidget {
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 28.0),
           child: Text(
-            cryptoCardText,
             //Update the Text Widget with the live bitcoin data
-
-//            '1 BTC = $bitcoinValueInSelectedCurrency $selectedCurrency',
+            '1 $cryptoCurrency = $value $selectedCurrency',
             //Update the currency name depending on the selectedCurrency, the user selected value.
 
             textAlign: TextAlign.center,

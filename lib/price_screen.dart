@@ -12,7 +12,6 @@ class PriceScreen extends StatefulWidget {
 class _PriceScreenState extends State<PriceScreen> {
   String selectedCurrency = currenciesList[0];
   //Update the default currency to first object in the List from coin_data, the first item in the currencyList.
-  String selectedCrypto = cryptoList[0];
 
   DropdownButton<String> androidDropdown() {
     //Material design Dropdown list for loop (Android UI component)
@@ -65,22 +64,25 @@ class _PriceScreenState extends State<PriceScreen> {
     );
   }
 
-  String bitcoinValueInSelectedCurrency = '?';
+  Map<String, String> coinValues = {};
   //Variable to hold the value and use in Text Widget.
+  bool isWaiting = false;
+  //7: Figure out a way of displaying a '?' on screen while we're waiting for the price data to come back. Hint: You'll need a ternary operator.
 
-  //TODO 7: Figure out a way of displaying a '?' on screen while we're waiting for the price data to come back. Hint: You'll need a ternary operator.
-
-  //TODO 6: Update this method to receive a Map containing the crypto:price key value pairs. Then use that map to update the CryptoCards.
   void getData() async {
     //Async method here awaits the coin data from coin_data.dart
+    isWaiting = true;
+    //7: Second, we set it to true when we initiate the request for prices.
     try {
-      double data = await CoinData().getCoinData(
-          selectedCurrency); //Can't await in a setState() so have to separate it out into two steps.
+      var data = await CoinData().getCoinData(selectedCurrency);
       //Call the class CoinData() and method getCoinData from coin_data and save that to the local variable data (data type = double)
+      //6: Update this method to receive a Map containing the crypto:price key value pairs. Change the data type from double to var to account for the new data retrieval of several items instead of 1
+      //7. Third, as soon the above line of code completes, we now have the data and no longer need to wait. So we can set isWaiting to false.
 
       setState(() {
-        bitcoinValueInSelectedCurrency = data.toStringAsFixed(0);
+        coinValues = data;
         //update the value of the displayed USD from the local variable "data" to reflect the data retrieved from the API call in class CoinData() and method getCoinData from coin_data
+        isWaiting = false;
       });
     } catch (e) {
       print(e);
@@ -95,6 +97,9 @@ class _PriceScreenState extends State<PriceScreen> {
   }
 
   //TODO: For bonus points, create a method that loops through the cryptoList and generates a CryptoCard for each.
+//  Future<void> cryptoLoop() {
+//    for (String cryptoItem in cryptoList) {}
+//  }
 
   @override
   Widget build(BuildContext context) {
@@ -108,25 +113,38 @@ class _PriceScreenState extends State<PriceScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          // 1: Refactor this Padding Widget into a separate Stateless Widget called CryptoCard, so we can create 3 of them, one for each cryptocurrency.
-          // 2: You'll need to able to pass the selectedCurrency, value and cryptoCurrency to the constructor of this CryptoCard Widget.
           // 3: You'll need to use a Column Widget to contain the three CryptoCards.
           Column(
             children: <Widget>[
               //BITCOIN
               CryptoCard(
-                cryptoCardText:
-                    '1 BTC = $bitcoinValueInSelectedCurrency $selectedCurrency',
+                cryptoCurrency: 'BTC',
+                //specify which values we want to display easily within each card by establishing a variable in the CrytptoCard class
+                value: isWaiting ? '?' : coinValues['BTC'],
+                //7. Finally, we use a ternary operator to check if we are waiting and if so, we'll display a '?' otherwise we'll show the actual price data.
+                //retrieve the values matching 'BTC' from the coinValues MAP as established in coin_data
+                selectedCurrency: selectedCurrency,
+                //display selected currency based on the user selected value from the dropdown menu / cupertino picker
               ),
               //ETHEREUM
               CryptoCard(
-                cryptoCardText:
-                    '1 ETH = $bitcoinValueInSelectedCurrency $selectedCurrency',
+                cryptoCurrency: 'ETH',
+                //specify which values we want to display easily within each card by establishing a variable in the CrytptoCard class
+                value: isWaiting ? '?' : coinValues['ETH'],
+                //7. Finally, we use a ternary operator to check if we are waiting and if so, we'll display a '?' otherwise we'll show the actual price data.
+                //retrieve the values matching 'ETH' from the coinValues MAP as established in coin_data
+                selectedCurrency: selectedCurrency,
+                //display selected currency based on the user selected value from the dropdown menu / cupertino picker
               ),
               //LITECOIN
               CryptoCard(
-                cryptoCardText:
-                    '1 LTC = $bitcoinValueInSelectedCurrency $selectedCurrency',
+                cryptoCurrency: 'BTC',
+                //specify which values we want to display easily within each card by establishing a variable in the CrytptoCard class
+                value: isWaiting ? '?' : coinValues['BTC'],
+                //7. Finally, we use a ternary operator to check if we are waiting and if so, we'll display a '?' otherwise we'll show the actual price data.
+                //retrieve the values matching 'LTC' from the coinValues MAP as established in coin_data
+                selectedCurrency: selectedCurrency,
+                //display selected currency based on the user selected value from the dropdown menu / cupertino picker
               ),
             ],
           ),
