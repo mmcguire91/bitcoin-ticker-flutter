@@ -96,10 +96,26 @@ class _PriceScreenState extends State<PriceScreen> {
     //Call getData() when the screen loads
   }
 
-  //TODO: For bonus points, create a method that loops through the cryptoList and generates a CryptoCard for each.
-//  Future<void> cryptoLoop() {
-//    for (String cryptoItem in cryptoList) {}
-//  }
+  //BONUS POINTS create a method that loops through the cryptoList and generates a CryptoCard for each.
+  Column makeCards() {
+    List<CryptoCard> cryptoCards = [];
+    for (String crypto in cryptoList) {
+      //created FOR IN loops to cycle through the crypto currencies
+      cryptoCards.add(
+        CryptoCard(
+          cryptoCurrency: crypto,
+          //display the name based on the FOR loop
+          selectedCurrency: selectedCurrency,
+          value: isWaiting ? '?' : coinValues[crypto],
+          //7. Finally, we use a ternary operator to check if we are waiting and if so, we'll display a '?' otherwise we'll show the actual price data as defined from the FOR loop
+        ),
+      );
+    }
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: cryptoCards,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -113,41 +129,7 @@ class _PriceScreenState extends State<PriceScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          // 3: You'll need to use a Column Widget to contain the three CryptoCards.
-          Column(
-            children: <Widget>[
-              //BITCOIN
-              CryptoCard(
-                cryptoCurrency: 'BTC',
-                //specify which values we want to display easily within each card by establishing a variable in the CrytptoCard class
-                value: isWaiting ? '?' : coinValues['BTC'],
-                //7. Finally, we use a ternary operator to check if we are waiting and if so, we'll display a '?' otherwise we'll show the actual price data.
-                //retrieve the values matching 'BTC' from the coinValues MAP as established in coin_data
-                selectedCurrency: selectedCurrency,
-                //display selected currency based on the user selected value from the dropdown menu / cupertino picker
-              ),
-              //ETHEREUM
-              CryptoCard(
-                cryptoCurrency: 'ETH',
-                //specify which values we want to display easily within each card by establishing a variable in the CrytptoCard class
-                value: isWaiting ? '?' : coinValues['ETH'],
-                //7. Finally, we use a ternary operator to check if we are waiting and if so, we'll display a '?' otherwise we'll show the actual price data.
-                //retrieve the values matching 'ETH' from the coinValues MAP as established in coin_data
-                selectedCurrency: selectedCurrency,
-                //display selected currency based on the user selected value from the dropdown menu / cupertino picker
-              ),
-              //LITECOIN
-              CryptoCard(
-                cryptoCurrency: 'BTC',
-                //specify which values we want to display easily within each card by establishing a variable in the CrytptoCard class
-                value: isWaiting ? '?' : coinValues['BTC'],
-                //7. Finally, we use a ternary operator to check if we are waiting and if so, we'll display a '?' otherwise we'll show the actual price data.
-                //retrieve the values matching 'LTC' from the coinValues MAP as established in coin_data
-                selectedCurrency: selectedCurrency,
-                //display selected currency based on the user selected value from the dropdown menu / cupertino picker
-              ),
-            ],
-          ),
+          makeCards(),
           Container(
             height: 150.0,
             alignment: Alignment.center,
