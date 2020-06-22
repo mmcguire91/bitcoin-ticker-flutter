@@ -40,8 +40,12 @@ class CoinData {
   //Create the Asynchronous method getCoinData() that returns a Future (the price data).
 
   Future getCoinData(String selectedCurrency) async {
-    //TODO 4: Use a for loop here to loop through the cryptoList and request the data for each of them in turn.
-    //TODO 5: Return a Map of the results instead of a single value.
+    for (String crypto in cryptoList) {
+      //TODO 4: Use a for loop here to loop through the cryptoList and request the data for each of them in turn.
+      print(crypto);
+      //TODO 5: Return a Map of the results instead of a single value.
+    }
+
     //get the coin data based on the user selectedCurrency saved to the variable selectedCurrency
 
     String url = '$coinApiUrl/BTC/$selectedCurrency?apikey=$apiKey';
